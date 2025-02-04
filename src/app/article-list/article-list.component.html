@@ -1,37 +1,41 @@
 
-<h2>Articles</h2>
-
-<div *ngIf="loading">Loading articles...</div>
-<div *ngIf="error">{{ error }}</div>
-
-<div class="main-article-container">
-  <div class="main-article" *ngIf="mainArticle">
-    <h3 class="title">{{ mainArticle.title }}</h3>
-    <div *ngIf="mainArticle.type=='VIDEO' && mainArticle.videoUrl">
-      <iframe [src]="getSanitizedVideoUrl(mainArticle.videoUrl)" width="100%" height="315" frameborder="0" allowfullscreen></iframe>
-    </div>
-  </div>
-</div>
-
-<div class="filter-container">
-  <div class="filter-item">
-    <label for="article-type">Filter by Type:</label>
-    <select id="article-type" [(ngModel)]="selectedType" (change)="onFilterChange()">
-      <option *ngFor="let type of articleTypes" [value]="type">{{ type }}</option>
-    </select>
-  </div>
-</div>
-
-<div *ngIf="!loading && !error">
-  <div *ngIf="filteredArticles.length==0">No Article</div>
-  <div class="article-container">
-    <a *ngFor="let article of filteredArticles" class="article-item" [routerLink]="['/article', article.id]">
-      <h3 class="title">{{ article.title }}</h3>
-      <img *ngIf="article.type=='FEATURED'" [src]="article.featureImgUrl" class="image"/>
-      <p *ngIf="article.type=='NORMAL'" [innerHTML]="getSanitizedHtml(article.description)" class="description"></p>
-      <div *ngIf="article.type=='VIDEO' && article.videoUrl">
-        <iframe [src]="getSanitizedVideoUrl(article.videoUrl)" width="100%" height="315" frameborder="0" allowfullscreen></iframe>
+<div class="page-content">
+  <div class="container">
+    <h2>All post / Featured Highlight</h2>
+    
+    <div *ngIf="loading">Loading articles...</div>
+    <div *ngIf="error">{{ error }}</div>
+    
+    <div *ngIf="mainArticle" class="main-article-container">
+      <div class="main-article">
+        <h3 class="title">{{ mainArticle.title }}</h3>
+        <div *ngIf="mainArticle.type=='VIDEO' && mainArticle.videoUrl">
+          <iframe [src]="getSanitizedVideoUrl(mainArticle.videoUrl)" width="100%" height="315" frameborder="0" allowfullscreen></iframe>
+        </div>
       </div>
-    </a>
+    </div>
+    
+    <div class="filter-container">
+      <div class="filter-item">
+        <label for="article-type">Filter by Type: </label>
+        <select id="article-type" class="filter-select" [(ngModel)]="selectedType" (change)="onFilterChange()">
+          <option *ngFor="let type of articleTypes" [value]="type">{{ type }}</option>
+        </select>
+      </div>
+    </div>
+    
+    <div *ngIf="!loading && !error">
+      <div *ngIf="filteredArticles.length==0">No Article</div>
+      <div class="article-container">
+        <a *ngFor="let article of filteredArticles" class="article-item" [routerLink]="['/article', article.id]">
+          <h3 class="title">{{ article.title }}</h3>
+          <img *ngIf="article.type=='FEATURED'" [src]="article.featureImgUrl" alt="Featured Image" class="image"/>
+          <p *ngIf="article.type=='NORMAL'" [innerHTML]="getSanitizedHtml(article.description)" class="description"></p>
+          <div *ngIf="article.type=='VIDEO' && article.videoUrl">
+            <iframe [src]="getSanitizedVideoUrl(article.videoUrl)" width="100%" height="315" frameborder="0" allowfullscreen></iframe>
+          </div>
+        </a>
+      </div>
+    </div>
   </div>
 </div>

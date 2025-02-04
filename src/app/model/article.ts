@@ -6,6 +6,7 @@ export abstract class Article {
     publishedAt: string; //date time in ISO format 
     url: string;
     type: ArticleType;
+    fullContent: string;
 }
 
 export class NormalArticle extends Article {
