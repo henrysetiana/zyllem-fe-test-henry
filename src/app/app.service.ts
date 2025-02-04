@@ -44,7 +44,25 @@ export class ZyllemApiService {
                 title: "Microsoft and Zyllem Partner to Transform the Logistics Industry",
                 type: "NORMAL",
                 description: `<p style="font-size: 16px; text-align: justify;"><span style="font-size: 16px;"><span style="font-weight: bold;">SINGAPORE</span> – Microsoft and Zyllem today announced the availability of Zyllem Enterprise on Microsoft Azure, allowing enterprises to fully digitize their logistics processes while achieving infrastructure compliance and utmost security.</span></p>`,
-            }
+            },
+            {
+                id: "5",
+                url: "https://www.zyllem.com/single-post/2019/01/07/Feature-Highlight-Cash-on-Delivery",
+                author: "Rhocela Pasigna",
+                publishedAt: "2018-12-06T16:00:00.000Z",
+                title: "Highlight Video",
+                type: "VIDEO",
+                videoUrl: `https://www.youtube.com/embed/UhVybeVwWmc?si=AtphHTadDIQSb43-`,
+            },
+            {
+                id: "6",
+                url: "https://www.zyllem.com/single-post/2019/01/07/Feature-Highlight-Cash-on-Delivery",
+                author: "Rhocela Pasigna",
+                publishedAt: "2018-12-06T16:00:00.000Z",
+                title: "Video 2",
+                type: "VIDEO",
+                videoUrl: `https://www.youtube.com/embed/0pybgeTliF8?si=eUDRud75CEKiproy`,
+            },
         ];
 
         return of(articles).pipe(delay(1000));
