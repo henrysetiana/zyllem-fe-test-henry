@@ -7,6 +7,7 @@ import { ArticleListComponent } from './article-list/article-list.component';
 import { FormsModule } from '@angular/forms';
 import { ArticleDetailComponent } from './article-detail/article-detail.component';
 import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { AppRoutingModule } from './app-routing.module';
   imports: [
     BrowserModule,
     FormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [ZyllemApiService],
   bootstrap: [AppComponent]

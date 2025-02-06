@@ -29,6 +29,8 @@ export class ArticleDetailComponent implements OnInit {
         this.loading = false;
       },
       (error) => {
+        //todo : handle actual error message here, can be logged in FE or display the error by set it on this.error
+        
         this.error = 'Failed to load article detail';
         this.loading = false;
       }

@@ -11,23 +11,33 @@ import { Article, NormalArticle } from '../model/article';
 export class ArticleListComponent implements OnInit {
   mainArticle: Article | null = null;
   articles: Array<Article> = [];
-  filteredArticles: Array<Article> = [];
-  selectedType: string = 'All';
-  articleTypes: string[] = ['All', 'FEATURED', 'NORMAL', 'VIDEO'];
+  selectedType: string = 'ALL';
+  articleTypes: string[] = ['ALL', 'FEATURED', 'NORMAL', 'VIDEO'];
   loading = true;
   error: string = '';
 
   constructor(private appService: ZyllemApiService, private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
-    this.appService.getArticles().subscribe(
+    this.fetchData();
+  }
+
+  fetchData():void {
+    this.mainArticle = null;
+    this.articles = [];
+    this.loading = true;
+    this.error = "";
+
+    this.appService.getArticles(this.selectedType).subscribe(
       (data) => {
         this.mainArticle = data.find((article)=>article.type=="VIDEO");
-        this.articles = data.filter((article)=> this.mainArticle && article.id!==this.mainArticle.id);
-        this.onFilterChange();
+        this.articles = data.filter((article)=> !this.mainArticle || article.id!==this.mainArticle.id);
         this.loading = false;
+        this.error ="";
       },
       (error) => {
+        //todo : handle actual error message here, can be logged in FE or display the error by set it on this.error
+        
         this.error = 'Failed to load articles';
         this.loading = false;
       }
@@ -36,11 +46,7 @@ export class ArticleListComponent implements OnInit {
 
   // Filter articles based on the selected type
   onFilterChange(): void {
-    if (this.selectedType === 'All' || !this.selectedType) {
-      this.filteredArticles = this.articles;  // Show all if 'All' is selected or no filter
-    } else {
-      this.filteredArticles = this.articles.filter(article => article.type === this.selectedType);
-    }
+    this.fetchData();
   }
 
   // Method to sanitize YouTube embed URL

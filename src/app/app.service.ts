@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, throwError, of } from 'rxjs';
 import { Article } from './model/article';
 import { delay } from "rxjs/operators";
+import { catchError } from 'rxjs/operators';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 
+//todo remove MockAPiService completely or create an interceptor to handle mock data on FE that can be turn on/off
 @Injectable()
-export class ZyllemApiService {
+export class MockApiService {
     private articles: any[] = [
         {
             id: "1",
@@ -69,12 +72,57 @@ export class ZyllemApiService {
         },
     ];
 
-    getArticles(): Observable<Article[]> {
-        return of(this.articles).pipe(delay(1000));
+    getArticles(type:string): Observable<Article[]> {
+        if(type=="ALL")
+            return of(this.articles).pipe(delay(1000));
+        else
+            return of(this.articles.filter(article => article.type === type)).pipe(delay(1000));
     }
 
     getArticleById(id: string): Observable<Article> {
-      const article = this.articles.find(article => article.id === id);
-      return of(article).pipe(delay(1000));
+        const article = this.articles.find(article => article.id === id);
+        return of(article).pipe(delay(1000));
+    }
+}
+
+@Injectable()
+export class ZyllemApiService {
+    private apiUrl = 'https://26b59200-a3ad-476f-b68f-64204dc926aa.mock.pstmn.io'; // Base URL for the API
+
+    constructor(private http: HttpClient) { }
+
+    // Get the list of articles
+    getArticles(type:string): Observable<Article[]> {
+        let params = new HttpParams()
+            .set('type', type.toString());
+
+        return this.http.get<Article[]>(`${this.apiUrl}/articles`, { params }).pipe(
+            catchError(this.handleError) // Handle errors for this request
+        );
+    }
+
+    // Get a specific article by ID
+    getArticleById(id: string): Observable<Article> {
+        let params = new HttpParams()
+            .set('id', id.toString());
+
+        return this.http.get<Article>(`${this.apiUrl}/articles/detail`, { params }).pipe(
+            catchError(this.handleError) // Handle errors for this request
+        );
+    }
+
+    // Error handler
+    private handleError(error: HttpErrorResponse): Observable<never> {
+        let errorMessage = 'An unknown error occurred!';
+
+        if (error.error instanceof ErrorEvent) {
+            errorMessage = `Error: ${error.error.message}`;
+        } else {
+            errorMessage = `Error ${error.status}: ${error.message}`;
+        }
+
+        console.log(errorMessage);
+
+        return throwError(() => new Error(errorMessage));
     }
 }
