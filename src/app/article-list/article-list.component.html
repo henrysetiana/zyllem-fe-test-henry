@@ -27,7 +27,7 @@
     <div *ngIf="!loading && !error">
       <div *ngIf="articles.length==0">No Article</div>
       <div class="article-container">
-        <a *ngFor="let article of articles" class="article-item" [routerLink]="['/article', article.id]">
+        <a *ngFor="let article of articles; trackBy: trackByArticleId" class="article-item" [routerLink]="['/article', article.id]">
           <h3 class="title">{{ article.title }}</h3>
           <img *ngIf="article.type=='FEATURED'" [src]="article.featureImgUrl" alt="Featured Image" class="image"/>
           <p *ngIf="article.type=='NORMAL'" [innerHTML]="getSanitizedHtml(article.description)" class="description"></p>

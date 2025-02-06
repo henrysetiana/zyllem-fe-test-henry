@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ZyllemApiService } from '../app.service';
 import { DomSanitizer, SafeHtml, SafeResourceUrl } from '@angular/platform-browser';
-import { Article, NormalArticle } from '../model/article';
+import { Article, ArticleType, NormalArticle } from '../model/article';
 
 @Component({
   selector: 'app-article-list',
@@ -12,7 +12,7 @@ export class ArticleListComponent implements OnInit {
   mainArticle: Article | null = null;
   articles: Array<Article> = [];
   selectedType: string = 'ALL';
-  articleTypes: string[] = ['ALL', 'FEATURED', 'NORMAL', 'VIDEO'];
+  articleTypes: string[] = ['ALL', ...Object.values(ArticleType)];
   loading = true;
   error: string = '';
 
@@ -57,5 +57,10 @@ export class ArticleListComponent implements OnInit {
   // Method to sanitize YouTube embed URL
   getSanitizedVideoUrl(url: string): SafeResourceUrl {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
+  // Track by function that uses the article's unique ID
+  trackByArticleId(index: number, article: Article): string {
+    return article.id;
   }
 }
